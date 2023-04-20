@@ -16,9 +16,10 @@ const USER_SCHEMA = new Schema({
 	},
 	photoURL: String,
 	password: String,
-	username: {
+	role: {
 		type: String,
-		unique: true
+		required: true,
+		default: "user"
 	}
 });
 

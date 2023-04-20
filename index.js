@@ -14,6 +14,9 @@ app.use(bodyParser.json())
 const userRouter = require('./Routes/User');
 app.use("/user", userRouter)
 
+const branchRouter = require('./Routes/Branch');
+app.use("/branch", branchRouter)
+
 app.use(cors())
 
 

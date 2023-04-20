@@ -1,43 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const User = require('../Models/UserModel');
+const User = require('../Models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const { handleSignUp, handleSignIn } = require("../Controllers/User");
+const emailValidator = require("../Validators/Email");
+const passwordValidator = require("../Validators/Password");
 
 
-// SignUp with username password => returns accesstoken and user object
-router.post('/signup', async (req, res) => {
-	const hashedPassword = await bcrypt.hash(req.body.password, 10);
-	const user = await new User({ ...req.body, password: hashedPassword })
-	try {
-		const newUser = await user.save();
-		const accessToken = jwt.sign({ id: newUser._id, username: newUser.username, email: newUser.email }, process.env.JWT_SECRET)
-		res.send({ accessToken, user: newUser })
-	} catch (err) {
-		res.status(400).json({ message: err.message })
-	}
-})
+router.post('/signup', emailValidator, passwordValidator, handleSignUp)
 
-// SignIn with username and password => returns accesstoken
-router.post('/signin', async (req, res) => {
-	const user = await User.findOne({ username: req.body.username })
-	if (!user) {
-		return res.status(404).send("Cannot find user!");
-	} else {
-		try {
-			if (await bcrypt.compare(req.body.password, user.password)) {
-				const accessToken = jwt.sign({ id: user._id, username: user.username, email: user.email }, process.env.JWT_SECRET)
-				res.send({ accessToken })
-			} else {
-				res.send("Not authorized!")
-			}
-		} catch (error) {
-			res.send(error)
-		}
-	}
-})
+router.post('/signin', emailValidator, passwordValidator, handleSignIn)
 
-// Reset Password => returns message
 router.patch('/reset-password', async (req, res) => {
 	const user = await User.findOne({ username: req.body.username })
 	if (!user) {
@@ -55,7 +28,6 @@ router.patch('/reset-password', async (req, res) => {
 	}
 })
 
-// Update user details  => returns updated user
 router.patch('/update', async (req, res) => {
 	const user = await User.findOne({ username: req.body.username })
 	if (!user) {
