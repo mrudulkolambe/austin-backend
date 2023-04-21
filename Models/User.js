@@ -16,10 +16,15 @@ const USER_SCHEMA = new Schema({
 	},
 	photoURL: String,
 	password: String,
+	username: {
+		type: String,
+		required: true
+	},
 	role: {
 		type: String,
 		required: true,
-		default: "user"
+		default: "student",
+		enum: ["student", "teacher", "admin"]
 	}
 });
 

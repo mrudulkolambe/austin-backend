@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 const { handleSignUp, handleSignIn } = require("../Controllers/User");
 const emailValidator = require("../Validators/Email");
 const passwordValidator = require("../Validators/Password");
+const isAdmin = require("../Middlewares/isAdmin");
 
 
-router.post('/signup', emailValidator, passwordValidator, handleSignUp)
+router.post('/signup', emailValidator, passwordValidator, isAdmin, handleSignUp)
 
 router.post('/signin', emailValidator, passwordValidator, handleSignIn)
 
