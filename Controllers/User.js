@@ -24,14 +24,14 @@ const handleSignUp = async (req, res) => {
 }
 
 const handleSignIn = async (req, res) => {
-	const user = await User.findOne({ username: req.body.username })
+	const user = await User.findOne({ username: req.body.username }).populate('role')
 	if (!user) {
 		res.json({ error: true, error: "Cannot find user", token: undefined })
 	} else {
 		try {
 			const errors = validationResult(req);
 			if (errors.isEmpty()) {
-				if (bcrypt.compare(req.body.password, user.password)) {
+				if (await bcrypt.compare(req.body.password, user.password)) {
 					const accessToken = jwt.sign({ _id: user._id, username: user.username, email: user.email, role: user.role }, process.env.JWT_SECRET)
 					res.json({ error: false, message: "Logged In Successfully!", token: accessToken })
 				} else {

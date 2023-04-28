@@ -2,14 +2,18 @@ const express = require('express');
 const router = express.Router();
 const { createBranch, getBranchById, updateBranch, getAllBranch } = require('../Controllers/Branch');
 const emailValidator = require('../Validators/Email');
-const isAdmin = require('../Middlewares/isAdmin');
+const canManageBranch = require('../Middlewares/canManageBranch');
 
+// GET ALL BRANCHES (NO RESTRICTION)
 router.get('/all', getAllBranch);
 
+// GET BRANCH BY ID (NO RESTRICTION)
 router.get('/:id', getBranchById);
 
-router.post('/create', emailValidator, isAdmin, createBranch);
+// CREATE BRANCH (ONLY WHO HAVE ACCESS)
+router.post('/create', emailValidator, canManageBranch, createBranch);
 
-router.patch('/update', emailValidator, isAdmin, updateBranch);
+// UPDATE  BRANCH (ONLY WHO HAVE ACCESS)
+router.patch('/update', emailValidator, canManageBranch, updateBranch);
 
 module.exports = router;

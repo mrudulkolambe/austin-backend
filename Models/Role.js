@@ -5,31 +5,32 @@ const { Schema } = mongoose;
 const ROLE_SCHEMA = new Schema({
 	role: {
 		type: String,
-		required: true
+		required: true,
 	},
-	canReadStudents:{
+	canManageUsers: {
 		type: Boolean,
-		required: true
+		required: true,
+		default: false
 	},
 	canManageStudents:{
 		type: Boolean,
-		required: true
-	},
-	canReadBranch:{
-		type: Boolean,
-		required: true
+		required: true,
+		default: false
 	},
 	canManageBranch: {
 		type: Boolean,
-		required: true
-	},
-	canReadBatch: {
-		type: Boolean,
-		required: true
+		required: true,
+		default: false
 	},
 	canManageBatch: {
 		type: Boolean,
-		required: true
+		required: true,
+		default: false
+	},
+	canManageRoles: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 })
 

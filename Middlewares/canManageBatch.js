@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const isAdmin = (req, res, next) => {
+const canManageBatch = (req, res, next) => {
 	try {
 		let token = req?.headers?.authorization?.split(" ")[1];
 		const data = jwt.verify(token, process.env.JWT_SECRET)
-		if (data && data.role.role === "admin") {
+		if (data && data.role.canManageBatch) {
 			next();
 		} else {
 			return res.json({ error: true, message: "Unauthorized access" });
@@ -14,4 +14,4 @@ const isAdmin = (req, res, next) => {
 	}
 }
 
-module.exports = isAdmin;
+module.exports = canManageBatch;

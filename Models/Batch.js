@@ -15,11 +15,13 @@ const BATCH_SCHEMA = new Schema({
 	},
 	typeOfBatch: {
 		type: String,
-		required: true
+		required: true,
+		enum: ['one-on-one', 'normal']
 	},
-	createdBy: {
+	branch:{
 		type: mongoose.SchemaTypes.ObjectId,
-		ref: "USER"
+		required: true,
+		ref: "BRANCH"
 	}
 }, { timestamps: true });
 

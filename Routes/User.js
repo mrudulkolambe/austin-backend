@@ -5,11 +5,12 @@ const bcrypt = require('bcrypt');
 const { handleSignUp, handleSignIn } = require("../Controllers/User");
 const emailValidator = require("../Validators/Email");
 const passwordValidator = require("../Validators/Password");
-const isAdmin = require("../Middlewares/isAdmin");
+const canManageUsers = require("../Middlewares/canManageUsers");
 
+// CREATE ACCOUNT (ONLY WHO HAVE ACCESS)
+router.post('/signup', emailValidator, passwordValidator, canManageUsers, handleSignUp)
 
-router.post('/signup', emailValidator, passwordValidator, isAdmin, handleSignUp)
-
+// LOGIN ACCOUNT (NO RESTRICTION)
 router.post('/signin', emailValidator, passwordValidator, handleSignIn)
 
 router.patch('/reset-password', async (req, res) => {
@@ -29,7 +30,8 @@ router.patch('/reset-password', async (req, res) => {
 	}
 })
 
-router.patch('/update', async (req, res) => {
+// UPDATE USER (ONLY WHO HAVE ACCESS) & (THAT PARTICULAR USER)
+router.patch('/update', canManageUsers, async (req, res) => {
 	const user = await User.findOne({ username: req.body.username })
 	if (!user) {
 		return res.status(404).send({ message: "Cannot find user!" });

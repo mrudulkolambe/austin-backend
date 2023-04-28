@@ -18,7 +18,9 @@ const USER_SCHEMA = new Schema({
 	password: String,
 	username: {
 		type: String,
-		required: true
+		required: true,
+		lowercase: true,
+		trim: true
 	},
 	role: {
 		type: mongoose.SchemaTypes.ObjectId,

@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config()
+mongoose.set('strictQuery', true);
 
 const app = express();
 const port = 1000;
@@ -16,6 +17,9 @@ app.use("/user", userRouter)
 
 const branchRouter = require('./Routes/Branch');
 app.use("/branch", branchRouter)
+
+const rolesRouter = require('./Routes/Role');
+app.use("/role", rolesRouter)
 
 app.use(cors())
 
@@ -31,5 +35,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
+	console.log(`Austin backend listening on port ${port}`)
 })
