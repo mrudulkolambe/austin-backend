@@ -29,8 +29,6 @@ const USER_SCHEMA = new Schema({
 	},
 	type: {
 		type: String,
-		required: true, 
-		default: undefined
 	}
 });
 
