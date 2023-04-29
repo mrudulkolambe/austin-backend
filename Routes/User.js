@@ -11,7 +11,7 @@ const canManageUsers = require("../Middlewares/canManageUsers");
 router.post('/signup', emailValidator, passwordValidator, canManageUsers, handleSignUp)
 
 // LOGIN ACCOUNT (NO RESTRICTION)
-router.post('/signin', emailValidator, passwordValidator, handleSignIn)
+router.post('/signin', passwordValidator, handleSignIn)
 
 router.patch('/reset-password', async (req, res) => {
 	const user = await User.findOne({ username: req.body.username })
