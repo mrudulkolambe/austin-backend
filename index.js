@@ -21,7 +21,9 @@ app.use("/branch", branchRouter)
 const rolesRouter = require('./Routes/Role');
 app.use("/role", rolesRouter)
 
-app.use(cors())
+app.use(cors({
+	origin: '*'
+}))
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
