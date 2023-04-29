@@ -8,6 +8,10 @@ mongoose.set('strictQuery', true);
 const app = express();
 const port = 1000;
 
+app.use(cors({
+	origin: '*'
+}))
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(bodyParser.json())
@@ -21,9 +25,6 @@ app.use("/branch", branchRouter)
 const rolesRouter = require('./Routes/Role');
 app.use("/role", rolesRouter)
 
-app.use(cors({
-	origin: '*'
-}))
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
