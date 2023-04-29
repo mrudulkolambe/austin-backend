@@ -10,18 +10,22 @@ const BATCH_SCHEMA = new Schema({
 		type: String,
 		required: true
 	},
-	totalHours: {
-		type: Number,
-	},
 	typeOfBatch: {
 		type: String,
 		required: true,
 		enum: ['one-on-one', 'normal']
 	},
-	branch:{
+	branch: {
 		type: mongoose.SchemaTypes.ObjectId,
 		required: true,
 		ref: "BRANCH"
+	},
+	Subjects: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		ref: 'SUBJECTS'
+	},
+	teachers: {
+		type: [Map],
 	}
 }, { timestamps: true });
 

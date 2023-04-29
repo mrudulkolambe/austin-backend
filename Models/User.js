@@ -26,6 +26,11 @@ const USER_SCHEMA = new Schema({
 		type: mongoose.SchemaTypes.ObjectId,
 		required: true,
 		ref: "ROLE"
+	},
+	type: {
+		type: String,
+		required: true, 
+		default: undefined
 	}
 });
 
