@@ -6,6 +6,10 @@ const CHAPTER_SCHEMA = new Schema({
 		type: String,
 		required: true
 	},
+	hours:{
+		type: Number,
+		required: true
+	}
 	
 }, { timestamps: true });
 

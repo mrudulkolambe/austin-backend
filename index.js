@@ -25,6 +25,12 @@ app.use("/branch", branchRouter)
 const rolesRouter = require('./Routes/Role');
 app.use("/role", rolesRouter)
 
+const subjectRouter = require('./Routes/Subject');
+app.use("/subject", subjectRouter)
+
+const AdmissionRouter = require('./Routes/Admission');
+app.use("/admission", AdmissionRouter)
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
