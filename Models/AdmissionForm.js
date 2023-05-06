@@ -114,6 +114,20 @@ const ADMISSION_FORM = new Schema({
 		type: Boolean,
 		required: true,
 		default: false
+	},
+	course: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: 'COURSE'
+	},
+	role: {
+		type: String,
+		required: true,
+		default: 'student'
+	},
+	isDisabled:{
+		type: Boolean,
+		required: true,
+		default: false
 	}
 })
 
