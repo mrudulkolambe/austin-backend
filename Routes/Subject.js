@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { createSubject } = require('../Controllers/Subject');
+const { createSubject, getAllSubjects } = require('../Controllers/Subject');
 
 // GET ALL BRANCHES (NO RESTRICTION)
 // router.get('/all', getAllBranch);
 
 // GET BRANCH BY ID (NO RESTRICTION)
-// router.get('/:id', getBranchById);
+router.get('/', getAllSubjects);
 
 // CREATE BRANCH (ONLY WHO HAVE ACCESS)
 router.post('/create', createSubject);

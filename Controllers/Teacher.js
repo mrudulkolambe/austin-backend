@@ -32,7 +32,7 @@ const updateTeacher = async (req, res) => {
 
 const getAllTeachers = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({})
+		const teachers = await Teacher.find({}).populate('subject')
 		if (teachers) {
 			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
 		} else {
@@ -82,4 +82,12 @@ const getAllTeachersBySalaryType = async (req, res) => {
 	}
 }
 
-module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, getAllTeachersBySalaryType, updateTeacher }
+const getAllTeachersBySubject = async (req, res) => {
+	try {
+		const teachers = await Teacher.find({subject: { $contains: `${req.params.subject}` }})
+	} catch (error) {
+		res.json({ error: true, message: err.message, teachers: undefined })
+	}
+}
+
+module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, getAllTeachersBySalaryType, updateTeacher, getAllTeachersBySubject }

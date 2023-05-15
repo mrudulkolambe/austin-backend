@@ -31,6 +31,9 @@ app.use("/subject", subjectRouter)
 const AdmissionRouter = require('./Routes/Admission');
 app.use("/admission", AdmissionRouter)
 
+const TeacherRouter = require('./Routes/Teacher');
+app.use("/teacher", TeacherRouter)
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })

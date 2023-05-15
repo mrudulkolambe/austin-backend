@@ -29,15 +29,19 @@ const TEACHER_SCHEMA = new Schema({
 		required: true,
 		default: false
 	},
-	canUpdateTimetable: {
-		type: Boolean,
-		required: true,
-		default: true
-	},
+	// canUpdateTimetable: {
+	// 	type: Boolean,
+	// 	required: true,
+	// 	default: true
+	// },
 	salaryType: {
 		type: String,
 		required: true,
 		enum: ['hourly', 'monthly']
+	},
+	subject: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		ref: 'SUBJECT'
 	}
 })
 

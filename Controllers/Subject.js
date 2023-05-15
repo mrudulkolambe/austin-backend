@@ -14,6 +14,20 @@ const createSubject = async (req, res) => {
 	}
 }
 
+const getAllSubjects = async (req, res) => {
+	try {
+		const subjects = await Subject.find({});
+		if (subjects) {
+			res.json({ error: false, message: 'Subject fetched successfully!', subjects: subjects });
+		} else {
+			res.json({ error: true, message: 'Something went wrong!', subjects: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, subject: undefined });
+	}
+}
+
 module.exports = {
-	createSubject
+	createSubject,
+	getAllSubjects
 }
