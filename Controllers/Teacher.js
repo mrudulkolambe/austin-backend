@@ -1,12 +1,12 @@
 const Teacher = require("../Models/Teacher")
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 const createTeacher = async (req, res) => {
 	try {
 		const salt = await bcrypt.genSalt(10)
 		const hashedPassword = await  bcrypt.hash(req.body.password, salt)
 		const newTeacher = new Teacher({...req.body, password: hashedPassword});
-		const finalTeacher = await newTeacher.save()
+		const finalTeacher = await newTeacher.save();
 		if (finalTeacher) {
 			res.json({ error: false, message: 'Teacher created successfully!', teacher: finalTeacher })
 		} else {
@@ -21,7 +21,7 @@ const updateTeacher = async (req, res) => {
 	try {
 		const teacher = await Teacher.findById(req.params._id)
 		if (teacher) {
-			const updatedTeacher = await Teacher.findByIdAndUpdate(teacher._id, req.body, {
+			const updatedTeacher = await Teacher.findByIdAndUpdate(teacher._id, {$unset: "password"},req.body, {
 				returnOriginal: false
 			})
 			res.json({ error: false, message: 'Teacher updated successfully!', teacher: updatedTeacher })
