@@ -5,7 +5,7 @@ const emailValidator = require('../Validators/Email');
 const canManageBranch = require('../Middlewares/canManageBranch');
 
 // GET ALL BRANCHES (NO RESTRICTION)
-router.get('/all', getAllBranch);
+router.get('/', getAllBranch);
 
 // GET BRANCH BY ID (NO RESTRICTION)
 router.get('/:id', getBranchById);

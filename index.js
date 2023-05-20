@@ -22,11 +22,23 @@ app.use("/user", userRouter)
 const branchRouter = require('./Routes/Branch');
 app.use("/branch", branchRouter)
 
+const chapterAllocationRouter = require('./Routes/ChapterAllocation');
+app.use("/chapterAllocation", chapterAllocationRouter)
+
+const batchRouter = require('./Routes/Batch.js');
+app.use("/batch", batchRouter)
+
 const rolesRouter = require('./Routes/Role');
 app.use("/role", rolesRouter)
 
+const courseRouter = require('./Routes/Course');
+app.use("/course", courseRouter)
+
 const subjectRouter = require('./Routes/Subject');
 app.use("/subject", subjectRouter)
+
+const chapterRouter = require('./Routes/Chapter');
+app.use("/chapter", chapterRouter)
 
 const AdmissionRouter = require('./Routes/Admission');
 app.use("/admission", AdmissionRouter)

@@ -20,7 +20,10 @@ const BATCH_SCHEMA = new Schema({
 		required: true,
 		ref: "BRANCH"
 	},
-	Subjects: {
+	course: {
+		type: [Map],
+	},
+	subjects: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: 'SUBJECTS'
 	},

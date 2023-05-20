@@ -1,8 +1,11 @@
 const Teacher = require("../Models/Teacher")
+const bcrypt = require('bcryptjs')
 
 const createTeacher = async (req, res) => {
 	try {
-		const newTeacher = new Teacher(req.body);
+		const salt = await bcrypt.genSalt(10)
+		const hashedPassword = await  bcrypt.hash(req.body.password, salt)
+		const newTeacher = new Teacher({...req.body, password: hashedPassword});
 		const finalTeacher = await newTeacher.save()
 		if (finalTeacher) {
 			res.json({ error: false, message: 'Teacher created successfully!', teacher: finalTeacher })

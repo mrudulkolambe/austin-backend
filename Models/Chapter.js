@@ -9,8 +9,15 @@ const CHAPTER_SCHEMA = new Schema({
 	hours:{
 		type: Number,
 		required: true
+	},
+	grade: {
+		type: String,
+		required: true
+	},
+	subjectID: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "SUBJECT"
 	}
-	
 }, { timestamps: true });
 
 
