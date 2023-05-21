@@ -6,7 +6,7 @@ const createTeacher = async (req, res) => {
 		const salt = await bcrypt.genSalt(10)
 		const hashedPassword = await bcrypt.hash(req.body.password, salt)
 		const newTeacher = new Teacher({ ...req.body, password: hashedPassword });
-		const finalTeacher = await newTeacher.save();
+		const finalTeacher = (await newTeacher.save()).populate('subject');
 		if (finalTeacher) {
 			res.json({ error: false, message: 'Teacher created successfully!', teacher: finalTeacher })
 		} else {
