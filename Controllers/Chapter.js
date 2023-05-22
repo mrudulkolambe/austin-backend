@@ -18,7 +18,7 @@ const createChapter = async (req, res) => {
 
 const updateChapter = async (req, res) => {
 	try {
-		const chapter = Chapter.findByIdAndUpdate(req.params._id, req.body);
+		const chapter = await Chapter.findByIdAndUpdate(req.params._id, req.body);
 		const finalChapter = await Chapter.findOne({ _id: chapter._id }).populate("subjectID");
 		if (chapter) {
 			res.json({ error: false, message: "Chapter updated successfully!", chapter: finalChapter })
