@@ -5,9 +5,8 @@ const createChapter = async (req, res) => {
 	try {
 		const chapter = new Chapter(req.body);
 		const newChapter = await chapter.save();
-		// const 
 		if (newChapter) {
-			res.json({ error: false, message: "Chapter created successfully!", chapter: newChapter })
+			res.json({ error: false, message: "Chapter created successfully!", chapter: newChapter.populate('subjectID') })
 		} else {
 			res.json({ error: true, message: "Something went wrong!", chapter: undefined })
 		}
@@ -18,7 +17,7 @@ const createChapter = async (req, res) => {
 
 const getAllChapters = async (req, res) => {
 	try {
-		const chapters = await Chapter.find({});
+		const chapters = await Chapter.find({}).populate('subjectID');
 		if (chapters) {
 			res.json({error: false, message: "Chapters fetched successfully!", chapters: chapters});
 		}else{
