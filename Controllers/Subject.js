@@ -14,6 +14,21 @@ const createSubject = async (req, res) => {
 	}
 }
 
+const updateSubject = async (req, res) => {
+	try {
+		const updatedSubject = await Subject.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		})
+		if (updatedSubject) {
+			res.json({ error: false, message: 'Subject updated successfully!', subject: updatedSubject });
+		} else {
+			res.json({ error: true, message: 'Something went wrong!', subject: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, subject: undefined });
+	}
+}
+
 const getAllSubjects = async (req, res) => {
 	try {
 		const subjects = await Subject.find({});
@@ -40,5 +55,6 @@ const deleteSubject = async (req, res) => {
 module.exports = {
 	createSubject,
 	getAllSubjects,
-	deleteSubject
+	deleteSubject,
+	updateSubject
 }
