@@ -10,6 +10,10 @@ const SUBJECT_SCHEMA = new Schema({
 		type: String,
 		required: true,
 	},
+	chapters: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		ref: "CHAPTER"
+	}
 }, { timestamps: true });
 
 

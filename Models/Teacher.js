@@ -28,6 +28,11 @@ const TEACHER_SCHEMA = new Schema({
 		required: true,
 		default: 'teacher'
 	},
+	username: {
+		type: String,
+		required: true,
+		unique: true
+	},
 	isDisabled: {
 		type: Boolean,
 		required: true,

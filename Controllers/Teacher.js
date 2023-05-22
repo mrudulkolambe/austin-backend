@@ -20,16 +20,13 @@ const createTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
 	try {
-		const teacher = await Teacher.findById(req.params._id)
-		if (teacher) {
-			const updatedTeacher = await Teacher.findByIdAndUpdate(teacher._id, { password: 0 }, req.body, {
+			const updatedTeacher = await Teacher.findByIdAndUpdate(req.params._id,  req.body, {
 				returnOriginal: false
 			})
-			res.json({ error: false, message: 'Teacher updated successfully!', teacher: updatedTeacher })
-		} else {
-			res.json({ error: true, message: 'Something went wrong!', teacher: undefined })
-		}
+			const teacher = await Teacher.findOne({_id: req.params._id}).populate('subject')
+			res.json({ error: false, message: 'Teacher updated successfully!', teacher: teacher })
 	} catch (err) {
+		console.log(err)
 		res.json({ error: true, message: err.message, teacher: undefined })
 	}
 }

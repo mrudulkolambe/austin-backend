@@ -27,7 +27,18 @@ const getAllSubjects = async (req, res) => {
 	}
 }
 
+const deleteSubject = async (req, res) => {
+	try {
+		await Subject.findByIdAndDelete(req.params._id);
+		res.json({ error: false, message: "Subject Deleted Successfully", subject: undefined });
+	} catch (error) {
+		res.json({ error: true, message: error.message, subject: undefined });
+	}
+}
+
+
 module.exports = {
 	createSubject,
-	getAllSubjects
+	getAllSubjects,
+	deleteSubject
 }

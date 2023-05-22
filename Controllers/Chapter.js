@@ -5,6 +5,7 @@ const createChapter = async (req, res) => {
 	try {
 		const chapter = new Chapter(req.body);
 		const newChapter = await chapter.save();
+		// const 
 		if (newChapter) {
 			res.json({ error: false, message: "Chapter created successfully!", chapter: newChapter })
 		} else {
