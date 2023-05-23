@@ -43,4 +43,18 @@ const getAllChapters = async (req, res) => {
 	}
 }
 
-module.exports = { createChapter, getAllChapters, updateChapter };
+const getChaptersBySubjectID = async (req, res) => {
+	try {
+		const chapters = await Chapter.find({ subjectID: req.params.subjectID }).populate('subjectID');
+		if (chapters) {
+			res.json({ error: false, message: "Chapters fetched successfully!", chapters: chapters });
+		} else {
+			res.json({ error: true, message: "Something went wrong!", chapters: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, chapter: undefined })
+	}
+}
+
+
+module.exports = { createChapter, getAllChapters, updateChapter, getChaptersBySubjectID };

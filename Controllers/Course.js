@@ -5,8 +5,9 @@ const createCourse = async (req, res) => {
 	try {
 		const newCourse = new Course(req.body);
 		const finalCourse = await newCourse.save();
-		if (finalCourse) {
-			res.json({ error: false, message: "Course created successfully!", course: finalCourse })
+		const course = await Course.findOne({_id: finalCourse._id}).populate('subjects')
+		if (course) {
+			res.json({ error: false, message: "Course created successfully!", course: course })
 		} else {
 			res.json({ error: true, message: "Something went wrong!", course: undefined })
 		}
