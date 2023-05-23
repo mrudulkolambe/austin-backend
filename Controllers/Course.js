@@ -29,4 +29,18 @@ const getAllCourses = async (req, res) => {
 	}
 }
 
-module.exports = { createCourse, getAllCourses }
+const updateCourses = async (req, res) => {
+	try {
+		const updatedCourse = await Course.findByIdAndUpdate(req.params._id, req.body);
+		const course = await Course.findOne({_id: req.params._id}).populate("subjects")
+		if (course) {
+			res.json({ error: false, message: "Courses updated successfully!", course: course })
+		} else {
+			res.json({ error: true, message: "Something went wrong!", course: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, course: undefined })
+	}
+}
+
+module.exports = { createCourse, getAllCourses, updateCourses }
