@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const CHAPTER_ALLOCATION_SCHEMA = new Schema({
 	name: {
 		type: String,
-		required: true
 	},
 	teacher: {
 		type: mongoose.SchemaTypes.ObjectId,
@@ -21,6 +20,10 @@ const CHAPTER_ALLOCATION_SCHEMA = new Schema({
 		ref: "SUBJECT",
 		required: true
 	},
+	batch:{
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "BATCH",
+	},
 	hours: {
 		type: Number,
 		default: 0,
@@ -29,6 +32,11 @@ const CHAPTER_ALLOCATION_SCHEMA = new Schema({
 	rate: {
 		type: Number,
 		required: true
+	},
+	hoursCompleted: {
+		type: Number,
+		required: true,
+		default: 0
 	}
 })
 

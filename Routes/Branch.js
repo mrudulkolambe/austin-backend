@@ -11,9 +11,9 @@ router.get('/', getAllBranch);
 router.get('/:id', getBranchById);
 
 // CREATE BRANCH (ONLY WHO HAVE ACCESS)
-router.post('/create', emailValidator, canManageBranch, createBranch);
+router.post('/create', createBranch);
 
 // UPDATE  BRANCH (ONLY WHO HAVE ACCESS)
-router.patch('/update', emailValidator, canManageBranch, updateBranch);
+router.patch('/:_id', updateBranch);
 
 module.exports = router;

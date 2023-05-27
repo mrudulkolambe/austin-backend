@@ -21,16 +21,9 @@ const BATCH_SCHEMA = new Schema({
 		ref: "BRANCH"
 	},
 	course: {
-		type: [Map],
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: 'COURSE'
 	},
-	subjects: {
-		type: [mongoose.SchemaTypes.ObjectId],
-		ref: 'SUBJECTS'
-	},
-	teachers: {
-		type: [mongoose.SchemaTypes.ObjectId],
-		ref: "TEACHER"
-	}
 }, { timestamps: true });
 
 

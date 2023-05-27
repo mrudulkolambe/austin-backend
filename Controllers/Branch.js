@@ -6,12 +6,12 @@ const getAllBranch = async (req, res) => {
 	try {
 		const branches = await Branch.find();
 		if (branches) {
-			res.json({ error: false, message: "Branch Fetched Successfully!", branch: branches })
+			res.json({ error: false, message: "Branch Fetched Successfully!", branches: branches })
 		} else {
-			res.json({ error: false, message: "No data available", branch: [] })
+			res.json({ error: false, message: "No data available", branches: [] })
 		}
 	} catch (error) {
-		res.json({ error: true, error: error.message, branch: undefined })
+		res.json({ error: true, error: error.message, branches: undefined })
 	}
 }
 
@@ -47,7 +47,7 @@ const updateBranch = async (req, res) => {
 	try {
 		const errors = validationResult(req);
 		if (errors.isEmpty()) {
-			const branch = await Branch.findByIdAndUpdate({ _id: req.body._id }, { ...req.body }, { returnOriginal: false })
+			const branch = await Branch.findByIdAndUpdate(req.params._id, req.body, { returnOriginal: false })
 			res.json({ error: false, message: "Branch Updated Successfully!", branch: branch })
 		} else {
 			res.json({ error: true, error: errors.array(), branch: undefined })
