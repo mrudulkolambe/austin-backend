@@ -24,6 +24,10 @@ const BATCH_SCHEMA = new Schema({
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: 'COURSE'
 	},
+	students: {
+		type: [mongoose.SchemaTypes.ObjectId],
+		ref: "ADMISSION"
+	}
 }, { timestamps: true });
 
 

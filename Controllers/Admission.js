@@ -2,7 +2,7 @@ const AdmissionForm = require("../Models/AdmissionForm")
 
 const getAllAdmissions = async (req, res) => {
 	try {
-		const admissions = await AdmissionForm.find({});
+		const admissions = await AdmissionForm.find({}, {password: 0});
 		if (admissions) {
 			res.json({ error: false, message: 'Fetched admissions successfully!', admissions: admissions })
 		} else {
@@ -41,7 +41,20 @@ const getAllPendingAdmissions = async (req, res) => {
 
 const getAdmissionById = async (req, res) => {
 	try {
-		const admission = await AdmissionForm.findById(req.params._id);
+		const admission = await AdmissionForm.findById(req.params._id, {password: 0});
+		if (admission) {
+			res.json({ error: false, message: 'Fetched admission successfully!', admission: admission })
+		} else {
+			res.json({ error: true, message: 'No result found!', admission: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, admission: undefined })
+	}
+}
+
+const getAdmissionByToken = async (req, res) => {
+	try {
+		const admission = await AdmissionForm.findById(req.user._id, {password: 0});
 		if (admission) {
 			res.json({ error: false, message: 'Fetched admission successfully!', admission: admission })
 		} else {
@@ -57,7 +70,7 @@ const createAdmission = async (req, res) => {
 		const newAdmission = new AdmissionForm(req.body);
 		const finalAdmission = await newAdmission.save();
 		if (finalAdmission) {
-			res.json({ error: false, message: 'Fetched admission successfully!', admission: finalAdmission })
+			res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
 		} else {
 			res.json({ error: true, message: 'No result found!!', admission: undefined })
 		}
@@ -66,4 +79,4 @@ const createAdmission = async (req, res) => {
 	}
 }
 
-module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission }
+module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission, getAdmissionByToken }

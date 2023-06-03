@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const CHAPTER_ALLOCATION_SCHEMA = new Schema({
-	name: {
-		type: String,
-	},
 	teacher: {
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "TEACHER",

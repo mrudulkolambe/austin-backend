@@ -26,7 +26,6 @@ const updateTeacher = async (req, res) => {
 			const teacher = await Teacher.findOne({_id: req.params._id}).populate('subject')
 			res.json({ error: false, message: 'Teacher updated successfully!', teacher: teacher })
 	} catch (err) {
-		console.log(err)
 		res.json({ error: true, message: err.message, teacher: undefined })
 	}
 }

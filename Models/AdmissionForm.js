@@ -24,7 +24,7 @@ const ADMISSION_FORM = new Schema({
 		required: true,
 	},
 	DOB: {
-		type: Date,
+		type: String,
 		required: true,
 	},
 	address: {
@@ -41,6 +41,13 @@ const ADMISSION_FORM = new Schema({
 	state: {
 		type: String,
 		required: true,
+	},
+	username: {
+		type: String,
+		unique: true
+	},
+	password: {
+		type: String,
 	},
 	pincode: {
 		type: String,

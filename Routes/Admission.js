@@ -1,12 +1,15 @@
 const express = require('express');
-const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission } = require('../Controllers/Admission');
+const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission, getAdmissionByToken } = require('../Controllers/Admission');
+const isStudent = require('../Middlewares/isStudent');
 const router = express.Router();
 
 router.post('/create', createAdmission);
 
-router.get('/getAllAdmissions', getAllAdmissions)
+router.get('/', getAllAdmissions)
 
-router.get('/:_id', getAdmissionById)
+router.get('/student/:_id', getAdmissionById)
+
+router.get('/token', isStudent, getAdmissionByToken)
 
 router.get('/confirm-admission', getAllConfirmedAdmissions)
 
