@@ -12,7 +12,12 @@ const ROLE_SCHEMA = new Schema({
 		required: true,
 		default: false
 	},
-	canManageStudents:{
+	canCreateUsers: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
+	canManageStudents: {
 		type: Boolean,
 		required: true,
 		default: false
@@ -22,12 +27,17 @@ const ROLE_SCHEMA = new Schema({
 		required: true,
 		default: false
 	},
+	canCreateBranch: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
 	canManageBatch: {
 		type: Boolean,
 		required: true,
 		default: false
 	},
-	canManageRoles: {
+	canCreateBatch: {
 		type: Boolean,
 		required: true,
 		default: false

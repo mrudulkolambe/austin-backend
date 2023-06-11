@@ -33,7 +33,7 @@ const handleSignIn = async (req, res) => {
 			const errors = validationResult(req);
 			if (errors.isEmpty()) {
 				if (await bcrypt.compare(req.body.password, user.password)) {
-					const accessToken = jwt.sign({ _id: user._id, username: user.username, email: user.email, role: user.role }, process.env.JWT_SECRET)
+					const accessToken = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET)
 					res.json({ error: false, message: "Logged In Successfully!", token: accessToken })
 				} else {
 					res.json({ error: true, message: "Invalid Credentials", token: undefined })
@@ -71,19 +71,17 @@ const handleStudentSignIn = async (req, res) => {
 	}
 }
 
-const confirmStudentAdmission = async (req, res) => {
+const getAllUsers = async (req, res) => {
 	try {
-		await AdmissionForm.findByIdAndUpdate(req.params._id, { username: req.body.username, confirmed: true }, {
-			returnOriginal: false
-		});
-		const updatedStudent = await AdmissionForm.findById(req.params._id, { password: 0 });
-		if (updatedStudent) {
-			res.json({ error: false, message: "Student Updated Successfully", student: updatedStudent });
+		const users = await User.find({}).populate("role");
+		if (users) {
+			res.json({ error: false, message: "Users fetched successfully!", users: users });
 		} else {
-			res.json({ error: true, message: "Something went wrong!", student: undefined });
+			res.json({ error: true, message: "Something went wrong!", users: undefined });
 		}
 	} catch (error) {
-		res.json({ error: true, message: error.message, student: undefined });
+		res.json({ error: true, message: error.message, users: undefined });
 	}
 }
-module.exports = { handleSignUp, handleSignIn, handleStudentSignIn, confirmStudentAdmission }
+
+module.exports = { handleSignUp, handleSignIn, handleStudentSignIn, getAllUsers }

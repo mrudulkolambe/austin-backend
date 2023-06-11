@@ -46,6 +46,9 @@ app.use("/admission", AdmissionRouter)
 const TeacherRouter = require('./Routes/Teacher');
 app.use("/teacher", TeacherRouter)
 
+const EmailRouter = require('./Routes/Email');
+app.use("/email", EmailRouter)
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })

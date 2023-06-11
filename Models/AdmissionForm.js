@@ -95,7 +95,7 @@ const ADMISSION_FORM = new Schema({
 		type: String,
 	},
 	admissionYear: {
-		type: Date,
+		type: String,
 		required: true,
 	},
 	grade: {

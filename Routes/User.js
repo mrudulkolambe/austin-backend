@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../Models/User');
 const bcrypt = require('bcrypt');
-const { handleSignUp, handleSignIn, handleStudentSignIn, confirmStudentAdmission } = require("../Controllers/User");
+const { handleSignUp, handleSignIn, handleStudentSignIn, confirmStudentAdmission, getAllUsers } = require("../Controllers/User");
 const emailValidator = require("../Validators/Email");
 const passwordValidator = require("../Validators/Password");
 const canManageUsers = require("../Middlewares/canManageUsers");
@@ -13,7 +13,6 @@ router.post('/signup', emailValidator, passwordValidator, canManageUsers, handle
 // LOGIN ACCOUNT (NO RESTRICTION)
 router.post('/signin/student', handleStudentSignIn)
 router.post('/signin', handleSignIn);
-router.patch('/confirm/:_id', confirmStudentAdmission)
 
 router.patch('/reset-password', async (req, res) => {
 	const user = await User.findOne({ username: req.body.username })
@@ -48,5 +47,7 @@ router.patch('/update', canManageUsers, async (req, res) => {
 		}
 	}
 })
+
+router.get("/", getAllUsers);
 
 module.exports = router;

@@ -4,13 +4,13 @@ const { getAllRoles, getRoleById, createRole, manageAccess } = require('../Contr
 const canManageRoles = require('../Middlewares/canManageRoles');
 
 // GET ALL ROLES (NO RESTRICTION)
-router.get('/all', getAllRoles);
+router.get('/', getAllRoles);
 
 // GET ROLE BY ID (NO RESTRICTION)
 router.get('/:_id', getRoleById);
 
 // CREATE ROLE (ONLY WHO HAVE ACCESS)
-router.post('/create', canManageRoles, createRole);
+router.post('/create', createRole);
 
 // UPDATE ROLE (ONLY WHO HAVE ACCESS)
 router.patch('/manage', canManageRoles, manageAccess);

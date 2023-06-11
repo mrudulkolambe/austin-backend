@@ -1,8 +1,9 @@
 const AdmissionForm = require("../Models/AdmissionForm")
+const bcrypt = require("bcrypt");
 
 const getAllAdmissions = async (req, res) => {
 	try {
-		const admissions = await AdmissionForm.find({}, {password: 0});
+		const admissions = await AdmissionForm.find({}, { password: 0 });
 		if (admissions) {
 			res.json({ error: false, message: 'Fetched admissions successfully!', admissions: admissions })
 		} else {
@@ -41,7 +42,7 @@ const getAllPendingAdmissions = async (req, res) => {
 
 const getAdmissionById = async (req, res) => {
 	try {
-		const admission = await AdmissionForm.findById(req.params._id, {password: 0});
+		const admission = await AdmissionForm.findById(req.params._id, { password: 0 });
 		if (admission) {
 			res.json({ error: false, message: 'Fetched admission successfully!', admission: admission })
 		} else {
@@ -52,9 +53,27 @@ const getAdmissionById = async (req, res) => {
 	}
 }
 
+const confirmStudentAdmission = async (req, res) => {
+	try {
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(req.body.password, salt)
+		await AdmissionForm.findByIdAndUpdate(req.params._id, { username: req.body.username, password: hashedPassword, confirmed: true }, {
+			returnOriginal: false
+		});
+		const updatedStudent = await AdmissionForm.findById(req.params._id, { password: 0 });
+		if (updatedStudent) {
+			res.json({ error: false, message: "Student Updated Successfully", student: updatedStudent });
+		} else {
+			res.json({ error: true, message: "Something went wrong!", student: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, student: undefined });
+	}
+}
+
 const getAdmissionByToken = async (req, res) => {
 	try {
-		const admission = await AdmissionForm.findById(req.user._id, {password: 0});
+		const admission = await AdmissionForm.findById(req.user._id, { password: 0 });
 		if (admission) {
 			res.json({ error: false, message: 'Fetched admission successfully!', admission: admission })
 		} else {
@@ -79,4 +98,21 @@ const createAdmission = async (req, res) => {
 	}
 }
 
-module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission, getAdmissionByToken }
+const editAdmissions = async (req, res) => {
+	try {
+		console.log(req.params._id)
+		await AdmissionForm.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		});
+		const updatedStudent = await AdmissionForm.findById(req.params._id, { password: 0 });
+		if (updatedStudent) {
+			res.json({ error: false, message: "Student Updated Successfully", student: updatedStudent });
+		} else {
+			res.json({ error: true, message: "Something went wrong!", student: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, student: undefined });
+	}
+}
+
+module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission }
