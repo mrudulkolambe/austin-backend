@@ -100,11 +100,10 @@ const createAdmission = async (req, res) => {
 
 const editAdmissions = async (req, res) => {
 	try {
-		console.log(req.params._id)
 		await AdmissionForm.findByIdAndUpdate(req.params._id, req.body, {
 			returnOriginal: false
 		});
-		const updatedStudent = await AdmissionForm.findById(req.params._id, { password: 0 });
+		const updatedStudent = await AdmissionForm.findById(req.params._id);
 		if (updatedStudent) {
 			res.json({ error: false, message: "Student Updated Successfully", student: updatedStudent });
 		} else {
@@ -115,4 +114,20 @@ const editAdmissions = async (req, res) => {
 	}
 }
 
-module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission }
+const handleIsDisabled = async (req, res) => {
+	try {
+		await AdmissionForm.findByIdAndUpdate(req.params._id, { isDisabled: req.body.isDisabled }, {
+			returnOriginal: false
+		});
+		const updatedStudent = await AdmissionForm.findById(req.params._id);
+		if (updatedStudent) {
+			res.json({ error: false, message: "Student Updated Successfully", student: updatedStudent });
+		} else {
+			res.json({ error: true, message: "Something went wrong!", student: undefined });
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, student: undefined });
+	}
+}
+
+module.exports = { getAllAdmissions, getAllConfirmedAdmissions, getAllPendingAdmissions, getAdmissionById, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission, handleIsDisabled }

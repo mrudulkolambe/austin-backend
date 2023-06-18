@@ -20,11 +20,11 @@ const createTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
 	try {
-			const updatedTeacher = await Teacher.findByIdAndUpdate(req.params._id,  req.body, {
-				returnOriginal: false
-			})
-			const teacher = await Teacher.findOne({_id: req.params._id}).populate('subject')
-			res.json({ error: false, message: 'Teacher updated successfully!', teacher: teacher })
+		const updatedTeacher = await Teacher.findByIdAndUpdate(req.params._id, req.body, {
+			returnOriginal: false
+		})
+		const teacher = await Teacher.findOne({ _id: req.params._id }).populate('subject')
+		res.json({ error: false, message: 'Teacher updated successfully!', teacher: teacher })
 	} catch (err) {
 		res.json({ error: true, message: err.message, teacher: undefined })
 	}
@@ -32,7 +32,7 @@ const updateTeacher = async (req, res) => {
 
 const getAllTeachers = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({}, { password: 0 }).populate('subject')
+		const teachers = await Teacher.find({}).populate('subject')
 		if (teachers) {
 			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
 		} else {
@@ -45,7 +45,7 @@ const getAllTeachers = async (req, res) => {
 
 const getAllDisabledTeachers = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({ isDisabled: true }, {password: 0})
+		const teachers = await Teacher.find({ isDisabled: true })
 		if (teachers) {
 			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
 		} else {
@@ -58,7 +58,7 @@ const getAllDisabledTeachers = async (req, res) => {
 
 const getAllEnabledTeachers = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({ isDisabled: false }, {password: 0})
+		const teachers = await Teacher.find({ isDisabled: false })
 		if (teachers) {
 			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
 		} else {
@@ -71,7 +71,7 @@ const getAllEnabledTeachers = async (req, res) => {
 
 const getAllTeachersBySalaryType = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({ salaryType: req.params.salary_type }, {password: 0})
+		const teachers = await Teacher.find({ salaryType: req.params.salary_type })
 		if (teachers) {
 			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
 		} else {
@@ -84,10 +84,22 @@ const getAllTeachersBySalaryType = async (req, res) => {
 
 const getAllTeachersBySubject = async (req, res) => {
 	try {
-		const teachers = await Teacher.find({ subject: { $contains: `${req.params.subject}` } }, {password: 0})
+		const teachers = await Teacher.find({ subject: { $contains: `${req.params.subject}` } })
 	} catch (error) {
 		res.json({ error: true, message: err.message, teachers: undefined })
 	}
 }
 
-module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, getAllTeachersBySalaryType, updateTeacher, getAllTeachersBySubject }
+const getTeacherByToken = async (req, res) => {
+	try {
+		const teacher = await Teacher.findById(req.user._id, { password: 0 });
+		if (teacher) {
+			res.json({ error: false, message: 'Fetched teacher successfully!', teacher: teacher })
+		} else {
+			res.json({ error: true, message: 'No result found!', teacher: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, teacher: undefined })
+	}
+}
+module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, getAllTeachersBySalaryType, updateTeacher, getAllTeachersBySubject, getTeacherByToken }

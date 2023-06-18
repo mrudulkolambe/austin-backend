@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission } = require('../Controllers/Admission');
+const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission, handleIsDisabled } = require('../Controllers/Admission');
 const isStudent = require('../Middlewares/isStudent');
 const router = express.Router();
 
@@ -12,6 +12,8 @@ router.get('/student/:_id', getAdmissionById)
 router.patch('/:_id', editAdmissions)
 
 router.patch('/confirm/:_id', confirmStudentAdmission)
+
+router.patch('/disabled/:_id', handleIsDisabled)
 
 router.get('/token', isStudent, getAdmissionByToken)
 
