@@ -1,4 +1,5 @@
-const Batch = require("../Models/Batch")
+const Batch = require("../Models/Batch");
+const ChapterAllocation = require("../Models/ChapterAllocation");
 
 const createBatch = async (req, res) => {
 	try {
@@ -30,9 +31,44 @@ const getAllBatches = async (req, res) => {
 
 const getBatchesByStudentToken = async (req, res) => {
 	try {
-		const batches = await Batch.find({ students : req.user._id }, { students: 0 }).populate("branch").populate("course");
+		const batches = await Batch.find({ students: req.user._id }, { students: 0 }).populate("branch").populate("course");
 		if (batches) {
 			res.json({ error: false, message: "Batches fetched successfully!", batches: batches })
+		} else {
+			res.json({ error: true, message: "Something went wrong!", batches: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, batches: undefined })
+	}
+}
+
+const getBatchesByTeacherToken = async (req, res) => {
+	try {
+		let batchArray = []
+		let batchSet = new Set(batchArray);
+		const chapterAllocations = await ChapterAllocation.find({ teacher: req.user._id }).populate("batch").populate({
+			path: 'batch',
+			populate: {
+				path: 'branch',
+				model: 'BRANCH'
+			}
+		}).populate({
+			path: 'batch',
+			populate: {
+				path: 'course',
+				model: 'COURSE',
+				populate: {
+					path: "subjects",
+					model: "SUBJECT"
+				}
+			}
+		})
+		chapterAllocations?.map((ChapterAllocation) => {
+			batchSet.add(ChapterAllocation?.batch)
+		})
+		batchArray = [...batchSet]
+		if (batchArray) {
+			res.json({ error: false, message: "Batches fetched successfully!", batches: batchArray })
 		} else {
 			res.json({ error: true, message: "Something went wrong!", batches: undefined })
 		}
@@ -57,4 +93,4 @@ const updateBatch = async (req, res) => {
 	}
 }
 
-module.exports = { createBatch, getAllBatches, updateBatch, getBatchesByStudentToken };
+module.exports = { createBatch, getAllBatches, updateBatch, getBatchesByStudentToken, getBatchesByTeacherToken };

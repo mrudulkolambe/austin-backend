@@ -28,6 +28,19 @@ const getAllChapterAllocation = async (req, res) => {
 	}
 }
 
+const getAllChapterAllocationByToken = async (req, res) => {
+	try {
+		const chapterAllocations = await ChapterAllocation.find({teacher: req.user._id}).populate("teacher").populate("chapter").populate("batch").populate("subject");
+		if (chapterAllocations) {
+			res.json({ error: false, message: "Successful fetched!", chapterAllocations: chapterAllocations })
+		} else {
+			res.json({ error: true, message: "Something went wrong!", chapterAllocations: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, chapterAllocations: undefined })
+	}
+}
+
 const updateChapterAllocation = async (req, res) => {
 	try {
 		const updatedChapterAllocation = await ChapterAllocation.findByIdAndUpdate(req.params._id, req.body, {
@@ -44,4 +57,4 @@ const updateChapterAllocation = async (req, res) => {
 	}
 }
 
-module.exports = { createChapterAllocation, getAllChapterAllocation, updateChapterAllocation }
+module.exports = { createChapterAllocation, getAllChapterAllocation, updateChapterAllocation, getAllChapterAllocationByToken }
