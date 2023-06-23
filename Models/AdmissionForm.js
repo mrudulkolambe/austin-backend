@@ -135,6 +135,9 @@ const ADMISSION_FORM = new Schema({
 		type: Boolean,
 		required: true,
 		default: false
+	},
+	token: {
+		type: String
 	}
 })
 

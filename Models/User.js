@@ -23,12 +23,15 @@ const USER_SCHEMA = new Schema({
 		trim: true
 	},
 	role: {
-		type: mongoose.SchemaTypes.ObjectId,
+		type: String,
 		required: true,
-		ref: "ROLE"
+		default: "admin"
 	},
 	type: {
 		type: String,
+	},
+	token: {
+		type: String
 	}
 });
 

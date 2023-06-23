@@ -45,14 +45,9 @@ const BRANCH_SCHEMA = new Schema({
 		type: String,
 		required: true
 	},
-	superAdmin: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: "USER",
-		required: true
-	},
 	manager: {
 		type: mongoose.SchemaTypes.ObjectId,
-		ref: "USER",
+		ref: "BRANCH-MANAGER",
 		required: true
 	}
 }, { timestamps: true });

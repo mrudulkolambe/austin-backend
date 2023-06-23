@@ -68,13 +68,12 @@ const handleStudentSignIn = async (req, res) => {
 }
 
 const handleTeacherSignIn = async (req, res) => {
-	const user = await Teacher.findOne({ username: req.body.username })
-	if (!user) {
-		res.json({ error: true, error: "Cannot find user", token: undefined })
-	} else {
-		try {
-			const errors = validationResult(req);
-			if (errors.isEmpty()) {
+	try {
+		const user = await Teacher.findOne({ username: req.body.username })
+		if (!user) {
+			res.json({ error: true, error: "Cannot find user", token: undefined })
+		} else {
+			if (!user.isDisabled) {
 				if (await bcrypt.compare(req.body.password, user.password)) {
 					const accessToken = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET)
 					res.json({ error: false, message: "Logged In Successfully!", token: accessToken })
@@ -82,11 +81,11 @@ const handleTeacherSignIn = async (req, res) => {
 					res.json({ error: true, message: "Invalid Credentials", token: undefined })
 				}
 			} else {
-				res.json({ error: true, error: errors, token: undefined })
+				res.json({ error: true, message: "Your account has beed disabled by the admin", token: undefined })
 			}
-		} catch (error) {
-			res.json({ error: true, error: error.message, token: undefined })
 		}
+	} catch (error) {
+		res.json({ error: true, error: error.message, token: undefined })
 	}
 }
 
@@ -103,4 +102,35 @@ const getAllUsers = async (req, res) => {
 	}
 }
 
-module.exports = { handleSignUp, handleSignIn, handleStudentSignIn, getAllUsers, handleTeacherSignIn }
+const resetPassword = async (req, res) => {
+	try {
+		let user = undefined;
+		if (req.user.role === "student") {
+			user = await AdmissionForm.findById(req.user._id);
+		}else if(req.user.role === "teacher"){
+			console.log(req.user)
+			user = await Teacher.findById(req.user._id);
+		}
+		let token = req?.headers?.authorization?.split(" ")[1];
+		if (user.token && user.token === token) {
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(req.body.password, salt);
+			user.password = hashedPassword
+			user.token = ""
+			user.save()
+				.then(() => {
+					res.json({ error: false, message: "Password Updated Successfully!" })
+				})
+				.catch((err) => {
+					res.json({ error: true, message: err.message })
+				})
+		} else {
+			res.json({ error: true, message: "Something went wrong!" })
+		}
+
+	} catch (error) {
+		res.json({ error: true, message: error.message, student: undefined });
+	}
+}
+
+module.exports = { handleSignUp, handleSignIn, handleStudentSignIn, getAllUsers, handleTeacherSignIn, resetPassword }

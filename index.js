@@ -49,6 +49,9 @@ app.use("/teacher", TeacherRouter)
 const EmailRouter = require('./Routes/Email');
 app.use("/email", EmailRouter)
 
+const BranchManagerRouter = require('./Routes/BranchManager');
+app.use("/branch-manager", BranchManagerRouter)
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })

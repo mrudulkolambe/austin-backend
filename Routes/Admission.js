@@ -1,6 +1,7 @@
 const express = require('express');
-const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission, handleIsDisabled } = require('../Controllers/Admission');
+const { getAllAdmissions, getAdmissionById, getAllConfirmedAdmissions, getAllPendingAdmissions, createAdmission, getAdmissionByToken, editAdmissions, confirmStudentAdmission, handleIsDisabled, resetPassword } = require('../Controllers/Admission');
 const isStudent = require('../Middlewares/isStudent');
+const passwordMiddleware = require('../Middlewares/PasswordMiddleware');
 const router = express.Router();
 
 router.post('/create', createAdmission);

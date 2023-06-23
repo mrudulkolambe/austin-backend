@@ -47,6 +47,9 @@ const TEACHER_SCHEMA = new Schema({
 	subject: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: 'SUBJECT'
+	},
+	token: {
+		type: String
 	}
 })
 
