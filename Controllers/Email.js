@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const AdmissionForm = require("../Models/AdmissionForm");
 const User = require("../Models/User");
+const BranchManager = require("../Models/BranchManager");
 const jwt = require("jsonwebtoken");
 const Teacher = require("../Models/Teacher");
 
@@ -36,7 +37,10 @@ const resetPasswordEmail = async (req, res) => {
 		user = await AdmissionForm.findOne({ email: req.body.email });
 	} else if (req.body.type === "teacher") {
 		user = await Teacher.findOne({ email: req.body.email });
-		console.log(user)
+	} else if (req.body.type === "branch-manager") {
+		user = await BranchManager.findOne({ email: req.body.email });
+	} else if (req.body.type === "admin") {
+		user = await User.findOne({ email: req.body.email });
 	}
 	if (user) {
 		const token = jwt.sign({ _id: user._id.toString(), role: user.role }, process.env.JWT_SECRET, {
