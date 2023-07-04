@@ -31,7 +31,7 @@ const getAllBatches = async (req, res) => {
 
 const getBatchesByStudentToken = async (req, res) => {
 	try {
-		const batches = await Batch.find({ students: req.user._id }, { students: 0 }).populate("branch").populate("course");
+		const batches = await Batch.find({ students: req.user._id }).populate("branch").populate("course");
 		if (batches) {
 			res.json({ error: false, message: "Batches fetched successfully!", batches: batches })
 		} else {
@@ -51,6 +51,13 @@ const getBatchesByTeacherToken = async (req, res) => {
 			populate: {
 				path: 'branch',
 				model: 'BRANCH'
+			}
+		}).populate({
+			path: 'batch',
+			populate: {
+				path: 'students',
+				model: 'ADMISSION',
+				select:'-password'
 			}
 		}).populate({
 			path: 'batch',

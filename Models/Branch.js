@@ -32,7 +32,7 @@ const BRANCH_SCHEMA = new Schema({
 	},
 	landmark: {
 		type: String,
-		required: true
+		required: false
 	},
 	branch_logo: {
 		type: String,

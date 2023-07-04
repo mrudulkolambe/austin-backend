@@ -39,11 +39,6 @@ const TEACHER_SCHEMA = new Schema({
 	// 	required: true,
 	// 	default: true
 	// },
-	salaryType: {
-		type: String,
-		required: true,
-		enum: ['hourly', 'monthly']
-	},
 	subject: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: 'SUBJECT'

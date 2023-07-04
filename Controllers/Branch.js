@@ -24,22 +24,22 @@ const getBranchById = async (req, res) => {
 			res.json({ error: false, message: "No branch found", branch: undefined })
 		}
 	} catch (error) {
-		res.json({ error: true, error: error.message, branch: undefined })
+		res.json({ error: true, message: error.message, branch: undefined })
 	}
 }
 
 const createBranch = async (req, res) => {
 	try {
-		const errors = validationResult(req);
-		if (errors.isEmpty()) {
-			const branch = new Branch(req.body);
-			const newBranch = await branch.save().populate("manager");
-			res.json({ error: false, message: "Branch Created Successfully!", branch: newBranch })
+		const branch = new Branch(req.body);
+		const newBranch = await branch.save()
+		const finalBranch = await Branch.findById(newBranch._id).populate("manager");
+		if (finalBranch) {
+			res.json({ error: false, message: "Branch Created Successfully!", branch: finalBranch })
 		} else {
-			res.json({ error: true, error: errors.array(), branch: undefined })
+			res.json({ error: true, message: "Something went wrong", branch: undefined })
 		}
 	} catch (error) {
-		res.json({ error: true, error: error.message, branch: undefined })
+		res.json({ error: true, message: error.message, branch: undefined })
 	}
 }
 

@@ -52,6 +52,9 @@ app.use("/email", EmailRouter)
 const BranchManagerRouter = require('./Routes/BranchManager');
 app.use("/branch-manager", BranchManagerRouter)
 
+const AttendanceRouter = require('./Routes/Attendance');
+app.use("/attendance", AttendanceRouter)
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })

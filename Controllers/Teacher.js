@@ -69,19 +69,6 @@ const getAllEnabledTeachers = async (req, res) => {
 	}
 }
 
-const getAllTeachersBySalaryType = async (req, res) => {
-	try {
-		const teachers = await Teacher.find({ salaryType: req.params.salary_type })
-		if (teachers) {
-			res.json({ error: false, message: 'Teacher fetched successfully!', teachers: teachers })
-		} else {
-			res.json({ error: true, message: 'Something went wrong!', teachers: undefined })
-		}
-	} catch (err) {
-		res.json({ error: true, message: err.message, teachers: undefined })
-	}
-}
-
 const getAllTeachersBySubject = async (req, res) => {
 	try {
 		const teachers = await Teacher.find({ subject: { $contains: `${req.params.subject}` } })
@@ -102,4 +89,4 @@ const getTeacherByToken = async (req, res) => {
 		res.json({ error: true, message: error.message, teacher: undefined })
 	}
 }
-module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, getAllTeachersBySalaryType, updateTeacher, getAllTeachersBySubject, getTeacherByToken }
+module.exports = { createTeacher, getAllTeachers, getAllDisabledTeachers, getAllEnabledTeachers, updateTeacher, getAllTeachersBySubject, getTeacherByToken }
