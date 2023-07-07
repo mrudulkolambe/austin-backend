@@ -25,8 +25,14 @@ app.use("/branch", branchRouter)
 const chapterAllocationRouter = require('./Routes/ChapterAllocation');
 app.use("/chapterAllocation", chapterAllocationRouter)
 
+const individualChapterAllocationRouter = require('./Routes/IndividualChapterAllocation');
+app.use("/individual-chapterAllocation", individualChapterAllocationRouter)
+
 const batchRouter = require('./Routes/Batch.js');
 app.use("/batch", batchRouter)
+
+const individualBatchRouter = require('./Routes/IndividualBatch');
+app.use("/individual-batch", individualBatchRouter)
 
 const rolesRouter = require('./Routes/Role');
 app.use("/role", rolesRouter)
@@ -54,6 +60,9 @@ app.use("/branch-manager", BranchManagerRouter)
 
 const AttendanceRouter = require('./Routes/Attendance');
 app.use("/attendance", AttendanceRouter)
+
+const IndividualAttendanceRouter = require('./Routes/IndividualAttendance');
+app.use("/individual-attendance", IndividualAttendanceRouter)
 
 
 

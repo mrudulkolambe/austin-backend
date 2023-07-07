@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const CHAPTER_ALLOCATION_SCHEMA = new Schema({
+const INDIVIDUAL_CHAPTER_ALLOCATION_SCHEMA = new Schema({
 	teacher: {
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "TEACHER",
@@ -17,9 +17,9 @@ const CHAPTER_ALLOCATION_SCHEMA = new Schema({
 		ref: "SUBJECT",
 		required: true
 	},
-	batch: {
+	individualBatch: {
 		type: mongoose.SchemaTypes.ObjectId,
-		ref: "BATCH",
+		ref: "INDIVIDUAL-BATCH",
 	},
 	hours: {
 		type: Number,
@@ -37,4 +37,4 @@ const CHAPTER_ALLOCATION_SCHEMA = new Schema({
 	}
 })
 
-module.exports = mongoose.model('CHAPTER_ALLOCATION', CHAPTER_ALLOCATION_SCHEMA)
+module.exports = mongoose.model('INDIVIDUAL_CHAPTER_ALLOCATION', INDIVIDUAL_CHAPTER_ALLOCATION_SCHEMA)

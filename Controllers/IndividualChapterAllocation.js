@@ -1,10 +1,10 @@
-const ChapterAllocation = require("../Models/ChapterAllocation")
+const IndividualChapterAllocation = require("../Models/IndividualChapterAllocation");
 
 const createChapterAllocation = async (req, res) => {
 	try {
-		const chapterAllocation = new ChapterAllocation(req.body);
+		const chapterAllocation = new IndividualChapterAllocation(req.body);
 		const newChapterAllocation = await chapterAllocation.save();
-		const finalChapterAllocation = await ChapterAllocation.findById(newChapterAllocation._id).populate("teacher").populate("chapter").populate("batch").populate("subject");
+		const finalChapterAllocation = await IndividualChapterAllocation.findById(newChapterAllocation._id).populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
 		if (finalChapterAllocation) {
 			res.json({ error: false, message: "Successful", chapterAllocation: finalChapterAllocation })
 		} else {
@@ -17,7 +17,7 @@ const createChapterAllocation = async (req, res) => {
 
 const getAllChapterAllocation = async (req, res) => {
 	try {
-		const chapterAllocations = await ChapterAllocation.find().populate("teacher").populate("chapter").populate("batch").populate("subject");
+		const chapterAllocations = await IndividualChapterAllocation.find().populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
 		if (chapterAllocations) {
 			res.json({ error: false, message: "Successful fetched!", chapterAllocations: chapterAllocations })
 		} else {
@@ -30,7 +30,7 @@ const getAllChapterAllocation = async (req, res) => {
 
 const getAllChapterAllocationByToken = async (req, res) => {
 	try {
-		const chapterAllocations = await ChapterAllocation.find({ teacher: req.user._id }).populate("teacher").populate("chapter").populate("batch").populate("subject");
+		const chapterAllocations = await IndividualChapterAllocation.find({ teacher: req.user._id }).populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
 		if (chapterAllocations) {
 			res.json({ error: false, message: "Successful fetched!", chapterAllocations: chapterAllocations })
 		} else {
@@ -43,10 +43,10 @@ const getAllChapterAllocationByToken = async (req, res) => {
 
 const updateChapterAllocation = async (req, res) => {
 	try {
-		const updatedChapterAllocation = await ChapterAllocation.findByIdAndUpdate(req.params._id, req.body, {
+		const updatedChapterAllocation = await IndividualChapterAllocation.findByIdAndUpdate(req.params._id, req.body, {
 			returnOriginal: false
 		});
-		const finalChapterAllocation = await ChapterAllocation.findById(req.params._id).populate("teacher").populate("chapter").populate("batch").populate("subject");
+		const finalChapterAllocation = await IndividualChapterAllocation.findById(req.params._id).populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
 		if (finalChapterAllocation) {
 			res.json({ error: false, message: "Chapter Allocation successfully updated!", chapterAllocation: finalChapterAllocation })
 		} else {

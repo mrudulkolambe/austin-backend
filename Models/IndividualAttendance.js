@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ATTENDANCE_SCHEMA = new Schema({
-	batch: {
+	individualBatch: {
 		type: mongoose.SchemaTypes.ObjectId,
-		ref: "BATCH"
+		ref: "INDIVIDUAL-BATCH"
 	},
 	date: {
 		type: Number,
@@ -34,8 +34,8 @@ const ATTENDANCE_SCHEMA = new Schema({
 	allStudents: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: "ADMISSION"
-	}
+	},
 }, { timestamps: true });
 
 
-module.exports = mongoose.model("ATTENDANCE", ATTENDANCE_SCHEMA);
+module.exports = mongoose.model("INDIVIDUAL-ATTENDANCE", ATTENDANCE_SCHEMA);
