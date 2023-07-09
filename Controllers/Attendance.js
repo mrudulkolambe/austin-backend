@@ -24,7 +24,10 @@ const createAttendance = async (req, res) => {
 
 const getAllAttendance = async (req, res) => {
 	try {
-		const attendance = await Attendance.find({}).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("batch").populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" })
+		const attendance = await Attendance.find({}).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("batch").populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" }).populate({
+			path: "batch",
+			populate: { path: "branch" }
+		});
 		if (attendance) {
 			res.json({ error: false, message: "Attendance fetched successfully!", attendance: attendance })
 		} else {

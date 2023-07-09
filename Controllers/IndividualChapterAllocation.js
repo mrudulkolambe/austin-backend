@@ -17,7 +17,10 @@ const createChapterAllocation = async (req, res) => {
 
 const getAllChapterAllocation = async (req, res) => {
 	try {
-		const chapterAllocations = await IndividualChapterAllocation.find().populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
+		const chapterAllocations = await IndividualChapterAllocation.find().populate("teacher").populate("chapter").populate("subject").populate("individualBatch").populate({
+			path: "individualBatch",
+			populate: { path: "branch" }
+		});
 		if (chapterAllocations) {
 			res.json({ error: false, message: "Successful fetched!", chapterAllocations: chapterAllocations })
 		} else {

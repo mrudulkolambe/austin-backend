@@ -6,7 +6,10 @@ const createAttendance = async (req, res) => {
 	try {
 		const attendance = new IndividualAttendance({ ...req.body, teacher: req.user._id });
 		const newAttendance = await attendance.save()
-		const finalAttendance = await IndividualAttendance.findById(newAttendance._id).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" }).populate("individualBatch");
+		const finalAttendance = await IndividualAttendance.findById(newAttendance._id).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" }).populate("individualBatch").populate({
+			path: "individualBatch",
+			populate: { path: "branch" }
+		});
 		const midChapter = await IndividualChapterAllocation.findOneAndUpdate({ teacher: newAttendance.teacher, chapter: newAttendance.chapter, individualBatch: newAttendance.individualBatch }, {
 			$inc: { hoursCompleted: req.body.hours }
 		}, {
@@ -31,7 +34,10 @@ const createAttendance = async (req, res) => {
 
 const getAllAttendance = async (req, res) => {
 	try {
-		const attendance = await IndividualAttendance.find({}).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" }).populate("individualBatch");
+		const attendance = await IndividualAttendance.find({}).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" }).populate("individualBatch").populate({
+			path: "individualBatch",
+			populate: { path: "branch" }
+		});
 		if (attendance) {
 			res.json({ error: false, message: "Attendance fetched successfully!", attendance: attendance })
 		} else {
