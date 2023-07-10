@@ -13,7 +13,7 @@ const BATCH_SCHEMA = new Schema({
 	typeOfBatch: {
 		type: String,
 		required: true,
-		enum: ['one-on-one', 'regular']
+		enum: 'regular'
 	},
 	branch: {
 		type: mongoose.SchemaTypes.ObjectId,
