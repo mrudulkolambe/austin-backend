@@ -58,6 +58,9 @@ app.use("/email", EmailRouter)
 const BranchManagerRouter = require('./Routes/BranchManager');
 app.use("/branch-manager", BranchManagerRouter)
 
+const BranchManagerViewerRouter = require('./Routes/BranchManagerViewer');
+app.use("/branch-manager-viewer", BranchManagerViewerRouter)
+
 const AttendanceRouter = require('./Routes/Attendance');
 app.use("/attendance", AttendanceRouter)
 

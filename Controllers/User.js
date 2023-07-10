@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const AdmissionForm = require("../Models/AdmissionForm");
 const Teacher = require("../Models/Teacher");
 const BranchManager = require("../Models/BranchManager");
+const BranchManagerViewer = require("../Models/BranchManagerViewer");
 
 
 const handleSignUp = async (req, res) => {
@@ -108,12 +109,14 @@ const resetPassword = async (req, res) => {
 		let user = undefined;
 		if (req.user.role === "student") {
 			user = await AdmissionForm.findById(req.user._id);
-		}else if(req.user.role === "teacher"){
+		} else if (req.user.role === "teacher") {
 			user = await Teacher.findById(req.user._id);
-		}else if(req.user.role === "admin"){
+		} else if (req.user.role === "admin") {
 			user = await User.findById(req.user._id);
-		}else if(req.user.role === "branch-manager"){
+		} else if (req.user.role === "branch-manager") {
 			user = await BranchManager.findById(req.user._id);
+		} else if (req.user.role === "branch-manager-viewer") {
+			user = await BranchManagerViewer.findById(req.user._id);
 		}
 		let token = req?.headers?.authorization?.split(" ")[1];
 		if (user.token && user.token === token) {

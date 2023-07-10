@@ -1,12 +1,12 @@
-const BranchManager = require("../Models/BranchManager")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken');
+const BranchManagerViewer = require("../Models/BranchManagerViewer");
 
 const createBranchManager = async (req, res) => {
 	try {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(req.body.password, salt)
-		const branchManager = await new BranchManager({
+		const branchManager = await new BranchManagerViewer({
 			...req.body, password: hashedPassword
 		});
 		const finalBranchManager = await branchManager.save()
@@ -22,7 +22,7 @@ const createBranchManager = async (req, res) => {
 
 const getAllBranchManagers = async (req, res) => {
 	try {
-		const branchManagers = await BranchManager.find({});
+		const branchManagers = await BranchManagerViewer.find({});
 		if (branchManagers) {
 			res.json({ error: false, message: "Branch Managers fetched successfully!", users: branchManagers })
 		} else {
@@ -35,7 +35,7 @@ const getAllBranchManagers = async (req, res) => {
 
 const getBranchManagerByProfileToken = async (req, res) => {
 	try {
-		const branchManager = await BranchManager.findById(req.user._id);
+		const branchManager = await BranchManagerViewer.findById(req.user._id);
 		if (branchManager) {
 			res.json({ error: false, message: "Branch Manager fetched successfully!", user: branchManager })
 		} else {
@@ -48,10 +48,10 @@ const getBranchManagerByProfileToken = async (req, res) => {
 
 const updateBranchManager = async (req, res) => {
 	try {
-		const updatedBranchManager = await BranchManager.findByIdAndUpdate(req.params._id, { isDisabled: req.body.isDisabled, username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, phonenumber: req.body.phonenumber }, {
+		const updatedBranchManager = await BranchManagerViewer.findByIdAndUpdate(req.params._id, { isDisabled: req.body.isDisabled, username: req.body.username, firstname: req.body.firstname, lastname: req.body.lastname, email: req.body.email, phonenumber: req.body.phonenumber }, {
 			returnOriginal: false
 		})
-		const branchManager = await BranchManager.findOne({ _id: req.params._id })
+		const branchManager = await BranchManagerViewer.findOne({ _id: req.params._id })
 		res.json({ error: false, message: 'Branch Manager updated successfully!', user: branchManager })
 	} catch (err) {
 		res.json({ error: true, message: err.message, teacher: undefined })
@@ -60,7 +60,8 @@ const updateBranchManager = async (req, res) => {
 
 const branchManagerLogin = async (req, res) => {
 	try {
-		const user = await BranchManager.findOne({ username: req.body.username });
+		console.log("user")
+		const user = await BranchManagerViewer.findOne({ username: req.body.username });
 		if (user) {
 			if (user.isDisabled) {
 				res.json({ error: true, message: "This account is disabled by admin, Please contact your admin", token: undefined })

@@ -49,6 +49,10 @@ const BRANCH_SCHEMA = new Schema({
 		type: mongoose.SchemaTypes.ObjectId,
 		ref: "BRANCH-MANAGER",
 		required: true
+	},
+	viewer: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: "BRANCH-MANAGER-VIEWER",
 	}
 }, { timestamps: true });
 
