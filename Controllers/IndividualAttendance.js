@@ -10,20 +10,31 @@ const createAttendance = async (req, res) => {
 			path: "individualBatch",
 			populate: { path: "branch" }
 		});
-		const midChapter = await IndividualChapterAllocation.findOneAndUpdate({ teacher: newAttendance.teacher, chapter: newAttendance.chapter, individualBatch: newAttendance.individualBatch }, {
-			$inc: { hoursCompleted: req.body.hours }
-		}, {
-			returnOriginal: false
-		}).populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
-		const finalChapter = await IndividualChapterAllocation.findById(midChapter._id).populate("teacher").populate("chapter").populate("subject").populate("individualBatch");
-		const midBatch = await IndividualBatch.findOneAndUpdate({ _id: newAttendance.individualBatch }, {
-			$inc: { hours: - req.body.hours }
-		}, {
-			returnOriginal: false
-		})
-		const finalBatch = await IndividualBatch.findOne({ _id: midBatch._id }).populate("branch").populate("course").populate("students")
 		if (finalAttendance) {
 			res.json({ error: false, message: "Attendance Marked Successfully!", attendance: finalAttendance, chapterAllocation: finalChapter, batch: finalBatch })
+		} else {
+			res.json({ error: true, message: "Something went wrong!", attendance: undefined })
+		}
+	} catch (error) {
+		res.json({ error: true, message: error.message, attendance: undefined })
+	}
+}
+
+
+
+const approveAttendance = async (req, res) => {
+	try {
+		const attendance = await IndividualAttendance.findByIdAndUpdate(req.params._id, {
+			approved: true
+		}).populate({ path: "students", select: "-password" }).populate({ path: "teacher", select: "-password" }).populate("individualBatch").populate("subject").populate("chapter").populate({ path: "allStudents", select: "-password" })
+		const midChapter = await IndividualChapterAllocation.findOne({ teacher: attendance.teacher._id, chapter: attendance.chapter._id, individualBatch: attendance.individualBatch._id })
+		const mainChapter = await IndividualChapterAllocation.findByIdAndUpdate(midChapter._id, {
+			$inc: { hoursCompleted: attendance.hours }
+		}, {
+			returnOriginal: false
+		}).populate("teacher").populate("chapter").populate("individualBatch").populate("subject")
+		if (attendance) {
+			res.json({ error: false, message: "Attendance Marked Successfully!", attendance: attendance, chapterAllocation: mainChapter })
 		} else {
 			res.json({ error: true, message: "Something went wrong!", attendance: undefined })
 		}
@@ -61,4 +72,4 @@ const getAttendanceByTeacher = async (req, res) => {
 	}
 }
 
-module.exports = { createAttendance, getAllAttendance, getAttendanceByTeacher }
+module.exports = { createAttendance, getAllAttendance, getAttendanceByTeacher, approveAttendance }

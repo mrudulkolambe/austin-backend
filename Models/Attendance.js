@@ -34,6 +34,14 @@ const ATTENDANCE_SCHEMA = new Schema({
 	allStudents: {
 		type: [mongoose.SchemaTypes.ObjectId],
 		ref: "ADMISSION"
+	},
+	hours: {
+		type: Number
+	},
+	approved: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 }, { timestamps: true });
 
