@@ -60,7 +60,6 @@ const updateBranchManager = async (req, res) => {
 
 const branchManagerLogin = async (req, res) => {
 	try {
-		console.log("user")
 		const user = await BranchManagerViewer.findOne({ username: req.body.username });
 		if (user) {
 			if (user.isDisabled) {
