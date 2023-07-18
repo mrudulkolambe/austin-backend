@@ -45,6 +45,9 @@ const TEACHER_SCHEMA = new Schema({
 	},
 	token: {
 		type: String
+	},
+	photoURL: {
+		type: String,
 	}
 })
 
