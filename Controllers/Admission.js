@@ -93,7 +93,7 @@ const createAdmission = async (req, res) => {
 			res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
 			transporter.sendMail({
 				from: `"Austin Educators" <${process.env.SMTP_USER}>`,
-				to: req.body.email,
+				to: "mrudulkolambe02@gmail.com",
 				subject: "Copy Of Admission Form",
 				html: `<!DOCTYPE html>
 				<html lang="en">
@@ -102,11 +102,23 @@ const createAdmission = async (req, res) => {
 					<meta name="viewport" content="width=device-width, initial-scale=1.0">
 					<title>Acknowledgement Form</title>
 				</head>
-				<body style="font-family: 'Nunito'; padding: 0; margin: 0; overflow: hidden;">
-					<section style="height: 100vh; width: 100vw;">
-						<iframe src="https://austin-frontend.vercel.app/view/admission/${finalAdmission?._id}" style="height: 100vh; width: 100vw;" frameborder="0"></iframe>
-					</section>
-				</body>
+				<body style="font-family: 'Nunito';">
+				<section class="w-screen h-screen bg-white flex items-center justify-center" style="color: black;width: 100vw;height: 100vh;background-color: rgb(255 255 255);display: flex;align-items: center;justify-content: center;">
+				   <div class="text-center" style="text-align: center;">
+					  <h1 class="text-3xl font-extrabold mb-5" style="font-size: 1.875rem;line-height: 2.25rem;font-weight: 800;margin-bottom: 1.25rem;">Admission Acknowledgement</h1>
+					  <div class="bg-white px-10 py-6 shadow-xl rounded-xl border" style="background-color: rgb(255 255 255);padding-left: 2.5rem;padding-right: 2.5rem;padding-top: 1.5rem;padding-bottom: 1.5rem;border-radius: 0.75rem;border-width: 1px;">
+						 <h2 class="font-bold text-2xl" style="font-weight: 700;font-size: 1.5rem;line-height: 2rem;">An admission request has been received <br> for Austin
+							Educators Account
+						 </h2>
+						 <p class="font-bold mt-3" style="font-weight: 700;margin-top: 0.75rem;">To view the acknowledgement, visit the following address:</p>
+						 <a href='${process.env.DASHBOARD_URL}view/admission/${finalAdmission._id}' class="mt-4 px-6 py-3 text-sm bg-[#91218f] text-white rounded-xl font-bold" style="border-radius: 0.75rem;font-weight: 700;margin-top: 1rem;padding-left: 1.5rem;padding-right: 1.5rem;padding-top: 0.75rem;padding-bottom: 0.75rem;font-size: 0.875rem;line-height: 1.25rem;background-color: rgb(145 33 143);color: rgb(255 255 255);">Click here</a>
+						 <p class="mt-3" style="margin-top: 0.75rem;">Your email: <span class="text-[#91218f] font-semibold" style="font-weight: 600;">${finalAdmission.email}</span>
+						 </p>
+						 <p class="font-bold mt-3" style="font-weight: 700;margin-top: 0.75rem;">If this was a mistake, just ignore this email and nothing will happen</p>
+					  </div>
+				   </div>
+				</section>
+			 </body>
 				
 				</html>`
 			})

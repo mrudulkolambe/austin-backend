@@ -44,7 +44,9 @@ const ADMISSION_FORM = new Schema({
 	},
 	username: {
 		type: String,
-		unique: true
+		unique: true,
+		default: "",
+		sparse: true
 	},
 	password: {
 		type: String,
@@ -131,7 +133,7 @@ const ADMISSION_FORM = new Schema({
 		required: true,
 		default: 'student'
 	},
-	isDisabled:{
+	isDisabled: {
 		type: Boolean,
 		required: true,
 		default: false
