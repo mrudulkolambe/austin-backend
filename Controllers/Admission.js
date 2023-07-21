@@ -93,7 +93,7 @@ const createAdmission = async (req, res) => {
 			res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
 			transporter.sendMail({
 				from: `"Austin Educators" <${process.env.SMTP_USER}>`,
-				to: "mrudulkolambe02@gmail.com",
+				to: `${req.body.email}`,
 				subject: "Copy Of Admission Form",
 				html: `<!DOCTYPE html>
 				<html lang="en">
