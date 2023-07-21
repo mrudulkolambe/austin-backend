@@ -1,6 +1,14 @@
 const AdmissionForm = require("../Models/AdmissionForm")
 const bcrypt = require("bcrypt");
-const { transporter } = require("./Email");
+
+const transporter = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+	port: 465,
+	auth: {
+		user: `${process.env.SMTP_USER}`,
+		pass: `${process.env.SMTP_PASSWORD}`,
+	}
+});
 
 const getAllAdmissions = async (req, res) => {
 	try {
@@ -90,10 +98,9 @@ const createAdmission = async (req, res) => {
 		const newAdmission = new AdmissionForm(req.body);
 		const finalAdmission = await newAdmission.save();
 		if (finalAdmission) {
-			res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
 			transporter.sendMail({
 				from: `"Austin Educators" <${process.env.SMTP_USER}>`,
-				to: `${req.body.email}`,
+				to: `${finalAdmission.email}`,
 				subject: "Copy Of Admission Form",
 				html: `<!DOCTYPE html>
 				<html lang="en">
@@ -122,6 +129,9 @@ const createAdmission = async (req, res) => {
 				
 				</html>`
 			})
+				.then(() => {
+					res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
+				})
 		} else {
 			res.json({ error: true, message: 'No result found!!', admission: undefined })
 		}
