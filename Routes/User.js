@@ -9,7 +9,7 @@ const canManageUsers = require("../Middlewares/canManageUsers");
 const passwordMiddleware = require("../Middlewares/PasswordMiddleware");
 
 // CREATE ACCOUNT (ONLY WHO HAVE ACCESS)
-router.post('/signup', emailValidator, passwordValidator, canManageUsers, handleSignUp)
+router.post('/signup', emailValidator, passwordValidator, handleSignUp)
 
 // LOGIN ACCOUNT (NO RESTRICTION)
 router.post('/signin/student', handleStudentSignIn)
