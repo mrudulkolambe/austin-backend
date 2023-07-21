@@ -1,5 +1,6 @@
 const AdmissionForm = require("../Models/AdmissionForm")
 const bcrypt = require("bcrypt");
+const { transporter } = require("./Email");
 
 const getAllAdmissions = async (req, res) => {
 	try {
@@ -90,6 +91,25 @@ const createAdmission = async (req, res) => {
 		const finalAdmission = await newAdmission.save();
 		if (finalAdmission) {
 			res.json({ error: false, message: 'Created admission successfully!', admission: finalAdmission })
+			transporter.sendMail({
+				from: `"Austin Educators" <${process.env.SMTP_USER}>`,
+				to: req.body.email,
+				subject: "Copy Of Admission Form",
+				html: `<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<title>Acknowledgement Form</title>
+				</head>
+				<body style="font-family: 'Nunito'; padding: 0; margin: 0; overflow: hidden;">
+					<section style="height: 100vh; width: 100vw;">
+						<iframe src="https://austin-frontend.vercel.app/view/admission/${finalAdmission?._id}" style="height: 100vh; width: 100vw;" frameborder="0"></iframe>
+					</section>
+				</body>
+				
+				</html>`
+			})
 		} else {
 			res.json({ error: true, message: 'No result found!!', admission: undefined })
 		}

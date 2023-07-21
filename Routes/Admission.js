@@ -9,7 +9,7 @@ router.post('/create', createAdmission);
 
 router.get('/', isUser, getAllAdmissions)
 
-router.get('/student/:_id', isUser, getAdmissionById)
+router.get('/student/:_id', getAdmissionById)
 
 router.patch('/:_id', isUser, editAdmissions)
 

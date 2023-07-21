@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const Teacher = require("../Models/Teacher");
 
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
 	port: 465,
 	auth: {
