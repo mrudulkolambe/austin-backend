@@ -9,7 +9,7 @@ const app = express();
 const port = 1000;
 
 app.use(cors({
-	origin: '*'
+	origin: ['https://austin-frontend.vercel.app', 'http://localhost:3000']
 }))
 
 app.use(bodyParser.urlencoded({ extended: false }))
