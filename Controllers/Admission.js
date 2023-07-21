@@ -1,5 +1,6 @@
 const AdmissionForm = require("../Models/AdmissionForm")
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
